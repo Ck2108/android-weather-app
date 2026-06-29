@@ -163,6 +163,9 @@ class WeatherViewModel(
                             windSpeed = "${weather.windSpeed.roundToInt()} $windUnitSuffix",
                             humidity = "${weather.humidity}%",
                             feelsLike = "${weather.feelsLike.roundToInt()}$unitSuffix",
+                            // Sunrise/sunset already formatted by the mapper ("6:45 AM")
+                            sunrise = weather.sunrise,
+                            sunset = weather.sunset,
                             hourlyForecast = hourlyItems,
                             error = null,
                             isCelsius = isCelsius  // Preserve the unit preference

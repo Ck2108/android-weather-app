@@ -24,8 +24,11 @@ fun WeatherDetailRow(
     windSpeed: String,
     humidity: String,
     feelsLike: String,
+    sunrise: String,
+    sunset: String,
     modifier: Modifier = Modifier
 ) {
+    // First row: Wind, Humidity, Feels Like
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -46,6 +49,25 @@ fun WeatherDetailRow(
             emoji = "🌡️",
             label = "Feels Like",
             value = feelsLike,
+            modifier = Modifier.weight(1f)
+        )
+    }
+
+    // Second row: Sunrise and Sunset
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        DetailChip(
+            emoji = "🌅",
+            label = "Sunrise",
+            value = sunrise,
+            modifier = Modifier.weight(1f)
+        )
+        DetailChip(
+            emoji = "🌇",
+            label = "Sunset",
+            value = sunset,
             modifier = Modifier.weight(1f)
         )
     }
