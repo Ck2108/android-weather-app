@@ -91,3 +91,20 @@ interface GeocodingApiService {
         @Query("count") count: Int = 5  // How many results to return
     ): GeocodingResponseDto
 }
+
+// =============================================================
+// Air Quality API (third interface — third base URL)
+// =============================================================
+// Returns European AQI (0–500+) for given coordinates.
+// Base URL: https://air-quality-api.open-meteo.com/
+// =============================================================
+interface AirQualityApiService {
+
+    @GET("v1/air-quality")
+    suspend fun getAirQuality(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double,
+        // Request current european_aqi — the standard EU air quality index
+        @Query("current") current: String = "european_aqi"
+    ): com.weather.app.data.remote.dto.AirQualityResponseDto
+}

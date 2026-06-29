@@ -166,6 +166,9 @@ class WeatherViewModel(
                             // Sunrise/sunset already formatted by the mapper ("6:45 AM")
                             sunrise = weather.sunrise,
                             sunset = weather.sunset,
+                            // AQI: index as display string, label already formatted by Mapper
+                            aqiIndex = if (weather.airQualityIndex >= 0) weather.airQualityIndex.toString() else "--",
+                            aqiLabel = weather.airQualityLabel,
                             hourlyForecast = hourlyItems,
                             error = null,
                             isCelsius = isCelsius  // Preserve the unit preference
