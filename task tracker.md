@@ -63,3 +63,17 @@
 - [x] Fix Bug #2 (no spinner on 2nd search) — `isLoading` in WeatherScreen
 - [x] Fix Bug #3 (wind unit) — `windUnitSuffix` + API `windSpeedUnit`
 - [x] Bonus: emoji fix in WeatherCard.kt, `PROJECT_CONTEXT.md` for IDE handoff
+
+## Step 7: GitHub Workflow ✅
+- [x] Fix: removed accidental git from home folder (`rm -rf ~/.git`)
+- [x] Initialize git inside Weather App (`git init`)
+- [x] Expand `.gitignore` with Android standard entries
+- [x] First commit — 39 files, 3182 lines of code
+- [x] Generate SSH key pair (`id_ed25519`)
+- [x] Add SSH key to GitHub → Settings → SSH and GPG keys
+- [x] Switch remote from HTTPS to SSH (`git remote set-url`)
+- [x] First push to GitHub (`git push -u origin main`)
+- [x] Verified live at: https://github.com/Ck2108/android-weather-app
+- [ ] Practice: make a change → commit → push (daily workflow loop)
+- [ ] Learn: create a branch → commit → push branch
+- [ ] Learn: pull request concept
