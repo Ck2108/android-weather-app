@@ -21,6 +21,7 @@ package com.weather.app.data.repository
 // =============================================================
 
 import com.weather.app.data.mapper.toDomainModel
+import com.weather.app.data.remote.AirQualityApiService
 import com.weather.app.data.remote.GeocodingApiService
 import com.weather.app.data.remote.WeatherApiService
 import com.weather.app.domain.model.Weather
@@ -28,7 +29,8 @@ import com.weather.app.util.WeatherLogger
 
 class WeatherRepositoryImpl(
     private val weatherApi: WeatherApiService,
-    private val geocodingApi: GeocodingApiService
+    private val geocodingApi: GeocodingApiService,
+    private val airQualityApi: AirQualityApiService
 ) : WeatherRepository {
     // "WeatherRepositoryImpl : WeatherRepository" means:
     // "This class IMPLEMENTS the WeatherRepository contract"
@@ -59,17 +61,33 @@ class WeatherRepositoryImpl(
                 windSpeedUnit = if (isCelsius) "kmh" else "mph"
             )
 
-            // STEP 3: Convert the DTO → Domain Model using our mapper
+            // STEP 3: Try to fetch AQI — GRACEFUL FALLBACK if it fails
+            // runCatching = "try this, if it throws ANY exception, give me -1 instead"
+            // WHY -1? It's a sentinel value meaning "data unavailable". The mapper
+            // converts -1 → "--" label. The app never crashes because of AQI.
+            // This is exactly what the user decided: weather always shows, AQI shows "--" on failure.
+            val airQualityIndex = runCatching {
+                airQualityApi.getAirQuality(
+                    latitude = location.latitude,
+                    longitude = location.longitude
+                ).current.europeanAqi
+            }.getOrElse { error ->
+                WeatherLogger.e("Repository: AQI fetch failed (graceful fallback)", error)
+                -1  // -1 = unavailable → mapper will show "--"
+            }
+
+            // STEP 4: Convert the DTO → Domain Model using our mapper
             // Use the location name from geocoding (it's properly capitalized)
             val displayName = if (location.admin1 != null) {
                 "${location.name}, ${location.admin1}"  // "Chicago, Illinois"
             } else {
                 location.name  // "Chicago"
             }
-            val weather = weatherResponse.toDomainModel(displayName)
+            // Pass airQualityIndex into the mapper — it handles label conversion there
+            val weather = weatherResponse.toDomainModel(displayName, airQualityIndex)
 
-            // STEP 4: Return success!
-            WeatherLogger.d("Repository: success for '$displayName'")
+            // STEP 5: Return success!
+            WeatherLogger.d("Repository: success for '$displayName' (AQI=$airQualityIndex)")
             Result.success(weather)
 
         } catch (e: Exception) {

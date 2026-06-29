@@ -26,6 +26,7 @@ package com.weather.app.di
 // Once you get Hilt, you'll think "Oh, Hilt just automates what we did here!"
 // =============================================================
 
+import com.weather.app.data.remote.AirQualityApiService
 import com.weather.app.data.remote.GeocodingApiService
 import com.weather.app.data.remote.WeatherApiService
 import com.weather.app.data.repository.WeatherRepository
@@ -88,15 +89,29 @@ object AppModule {
     }
 
     // =============================================================
-    // Step 4: Create the Repository
+    // Step 4: Create the Air Quality API service
     // =============================================================
-    // Give the repository both API services so it can:
-    //   1. Search for cities (geocodingApi)
-    //   2. Get weather data (weatherApi)
+    // Third base URL — completely separate server for pollution data.
+    // WHY same okHttpClient? The "truck" (HTTP client with logging)
+    // is reusable. Only the "destination" (base URL) changes.
+    private val airQualityApi: AirQualityApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://air-quality-api.open-meteo.com/")
+            .client(okHttpClient)                        // Same truck, third destination
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AirQualityApiService::class.java)
+    }
+
+    // =============================================================
+    // Step 5: Create the Repository (was Step 4)
+    // =============================================================
+    // Now the repository gets THREE API services — it can call all three!
     val weatherRepository: WeatherRepository by lazy {
         WeatherRepositoryImpl(
             weatherApi = weatherApi,
-            geocodingApi = geocodingApi
+            geocodingApi = geocodingApi,
+            airQualityApi = airQualityApi
         )
     }
 }

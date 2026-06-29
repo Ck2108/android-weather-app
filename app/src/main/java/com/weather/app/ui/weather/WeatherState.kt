@@ -56,6 +56,8 @@ data class WeatherState(
     val feelsLike: String = "",             // "70°F"
     val sunrise: String = "",              // "6:45 AM"
     val sunset: String = "",               // "8:32 PM"
+    val aqiIndex: String = "--",           // "42" or "--" if unavailable
+    val aqiLabel: String = "--",           // "Good", "Moderate", etc. or "--"
     val hourlyForecast: List<HourlyWeather> = emptyList(),  // List of hourly data
 
     // ---- Screen state ----

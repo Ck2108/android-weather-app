@@ -33,7 +33,7 @@ import com.weather.app.domain.model.Weather
 //
 // Usage: val weather = responseDto.toDomainModel("Chicago")
 // =============================================================
-fun WeatherResponseDto.toDomainModel(cityName: String): Weather {
+fun WeatherResponseDto.toDomainModel(cityName: String, airQualityIndex: Int = -1): Weather {
     return Weather(
         cityName = cityName,
         temperature = current.temperature,
@@ -47,8 +47,10 @@ fun WeatherResponseDto.toDomainModel(cityName: String): Weather {
         hourlyTemperatures = hourly.temperature,
         hourlyWeatherCodes = hourly.weatherCode,
         hourlyTimes = hourly.time,
-        sunrise = formatSunTime(daily.sunrise.firstOrNull()),  // "2024-01-01T06:45" → "6:45 AM"
-        sunset = formatSunTime(daily.sunset.firstOrNull())     // "2024-01-01T20:32" → "8:32 PM"
+        sunrise = formatSunTime(daily.sunrise.firstOrNull()),
+        sunset = formatSunTime(daily.sunset.firstOrNull()),
+        airQualityIndex = airQualityIndex,          // raw Int from AQI API (-1 if unavailable)
+        airQualityLabel = aqiToLabel(airQualityIndex) // Mapper converts it — ViewModel stays clean!
     )
 }
 
@@ -148,4 +150,23 @@ fun formatSunTime(isoTime: String?): String {
     } catch (e: Exception) {
         "N/A"  // If anything goes wrong, show N/A — never crash the app
     }
+}
+
+// =============================================================
+// AQI Int → human-readable label
+// =============================================================
+// WHY here and not in ViewModel? Because the user correctly identified:
+// "All conversions happen in the Mapper. ViewModel stays clean."
+// The ViewModel just passes weather.airQualityLabel straight to state.
+//
+// -1 is our sentinel value meaning "AQI fetch failed gracefully".
+// =============================================================
+fun aqiToLabel(index: Int): String = when {
+    index < 0    -> "--"          // -1 = fetch failed, graceful fallback
+    index <= 20  -> "Good"
+    index <= 40  -> "Fair"
+    index <= 60  -> "Moderate"
+    index <= 80  -> "Poor"
+    index <= 100 -> "Very Poor"
+    else         -> "Hazardous"
 }

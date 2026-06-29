@@ -24,11 +24,8 @@ fun WeatherDetailRow(
     windSpeed: String,
     humidity: String,
     feelsLike: String,
-    sunrise: String,
-    sunset: String,
     modifier: Modifier = Modifier
 ) {
-    // First row: Wind, Humidity, Feels Like
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -52,8 +49,15 @@ fun WeatherDetailRow(
             modifier = Modifier.weight(1f)
         )
     }
+}
 
-    // Second row: Sunrise and Sunset
+// Separate composable so WeatherScreen can place it AFTER AirQualityCard
+@Composable
+fun SunriseSunsetRow(
+    sunrise: String,
+    sunset: String,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -72,6 +76,7 @@ fun WeatherDetailRow(
         )
     }
 }
+
 
 @Composable
 private fun DetailChip(

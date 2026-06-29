@@ -52,8 +52,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.weather.app.ui.components.AirQualityCard
 import com.weather.app.ui.components.HourlyForecast
 import com.weather.app.ui.components.SearchBar
+import com.weather.app.ui.components.SunriseSunsetRow
 import com.weather.app.ui.components.WeatherCard
 import com.weather.app.ui.components.WeatherDetailRow
 import com.weather.app.ui.theme.ErrorCoral
@@ -251,13 +253,21 @@ private fun SuccessContent(state: WeatherState) {
                 windSpeed = state.windSpeed,
                 humidity = state.humidity,
                 feelsLike = state.feelsLike,
-                sunrise = state.sunrise,
-                sunset = state.sunset
             )
 
             if (state.hourlyForecast.isNotEmpty()) {
                 HourlyForecast(hourlyData = state.hourlyForecast)
             }
+
+            AirQualityCard(
+                aqiIndex = state.aqiIndex,
+                aqiLabel = state.aqiLabel
+            )
+
+            SunriseSunsetRow(
+                sunrise = state.sunrise,
+                sunset = state.sunset
+            )
         }
     }
 }

@@ -38,5 +38,7 @@ data class Weather(
     val hourlyWeatherCodes: List<Int>,      // [0, 1, 3, ...]
     val hourlyTimes: List<String>,          // ["2024-01-01T13:00", ...]
     val sunrise: String,               // "6:45 AM" (formatted, not raw ISO)
-    val sunset: String                 // "8:32 PM" (formatted, not raw ISO)
+    val sunset: String,                // "8:32 PM" (formatted, not raw ISO)
+    val airQualityIndex: Int,          // 42 (-1 = unavailable, used for gradient bar position)
+    val airQualityLabel: String        // "😊 Good" (converted by Mapper from the Int)
 )
