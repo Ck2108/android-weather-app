@@ -1,0 +1,39 @@
+# ============================================================
+# Weather App .gitignore — Standard Android + Kotlin project
+# ============================================================
+
+# Built app files (Android rebuilds these every time — huge & auto-generated)
+/build
+/app/build
+**/build/
+
+# Gradle caches (auto-downloaded, never edit these)
+.gradle
+gradle/wrapper/gradle-wrapper.jar
+
+# IDE settings (personal to each developer — your colors ≠ my colors)
+/.idea
+*.iml
+.vscode/
+
+# Personal SDK location (YOUR Mac path — breaks others' computers)
+local.properties
+
+# Keystore / signing files (NEVER commit — like committing your house key)
+*.jks
+*.keystore
+keystore.properties
+
+# OS junk files (Mac-specific trash)
+.DS_Store
+Thumbs.db
+
+# Kotlin compiler output
+*.class
+out/
+
+# Capture / profiler output (Android Studio recordings)
+captures/
+
+# Generated code (auto-created by annotation processors)
+**/generated/

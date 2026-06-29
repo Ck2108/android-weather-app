@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+strings.xml — All the text in your app goes here.
+Why? So you can easily translate the app to other languages later.
+Instead of writing "Weather App" directly in code, you write
+@string/app_name and it looks up the value here.
+-->
+<resources>
+    <string name="app_name">Weather App</string>
+</resources>

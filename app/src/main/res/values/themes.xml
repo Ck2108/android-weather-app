@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+themes.xml — The app's "look" before Compose takes over.
+
+When your app first opens, for a brief moment Android uses this
+XML theme. Then Compose loads and takes over with its own theme.
+
+Think of it like the restaurant's exterior paint — it's what
+people see for a moment before they walk inside.
+
+NoActionBar = Don't show the old-style top bar. Compose handles that.
+-->
+<resources>
+    <style name="Theme.WeatherApp" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Make the status bar (top of phone) blend with our app -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+</resources>

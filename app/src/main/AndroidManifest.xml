@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+=================================================================
+AndroidManifest.xml — "The Building Permit"
+=================================================================
+Every Android app MUST have this file. It tells the Android
+operating system:
+  1. What PERMISSIONS the app needs (like internet access)
+  2. What SCREENS (Activities) the app has
+  3. Which screen to show FIRST when the app launches
+  4. The app's name and icon
+
+🍽️ Restaurant analogy: This is like the restaurant's
+   business license that tells the city:
+   - "We serve food" (permission)
+   - "We have a dining room" (activity)
+   - "The front door is here" (LAUNCHER intent-filter)
+=================================================================
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- PERMISSION: Let our app access the internet -->
+    <!-- We need this to fetch weather data from the API later -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.WeatherApp"
+        tools:targetApi="34">
+
+        <!--
+        MainActivity = Our app's ONE screen (for now).
+        "exported=true" means the Android home screen can launch it.
+        The intent-filter below says "this is the MAIN entry point"
+        — it's the front door of our restaurant.
+        -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.WeatherApp">
+            <intent-filter>
+                <!-- MAIN = This is the starting activity -->
+                <action android:name="android.intent.action.MAIN" />
+                <!-- LAUNCHER = Show this app's icon on the home screen -->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
