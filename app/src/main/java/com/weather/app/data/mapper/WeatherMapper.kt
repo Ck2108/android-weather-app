@@ -46,7 +46,9 @@ fun WeatherResponseDto.toDomainModel(cityName: String): Weather {
         feelsLike = current.apparentTemperature,
         hourlyTemperatures = hourly.temperature,
         hourlyWeatherCodes = hourly.weatherCode,
-        hourlyTimes = hourly.time
+        hourlyTimes = hourly.time,
+        sunrise = formatSunTime(daily.sunrise.firstOrNull()),  // "2024-01-01T06:45" → "6:45 AM"
+        sunset = formatSunTime(daily.sunset.firstOrNull())     // "2024-01-01T20:32" → "8:32 PM"
     )
 }
 
@@ -118,5 +120,32 @@ fun formatHourlyTime(isoTime: String): String {
         }
     } catch (e: Exception) {
         isoTime  // If parsing fails, just show the raw time
+    }
+}
+
+// =============================================================
+// Format sunrise/sunset time: "2024-01-01T06:45" → "6:45 AM"
+// =============================================================
+// WHY nullable input? The API might not return sunrise/sunset for
+// some locations (e.g., extreme latitudes like Alaska in winter).
+// firstOrNull() returns null if the list is empty — we handle that
+// gracefully with "N/A" instead of crashing.
+// =============================================================
+fun formatSunTime(isoTime: String?): String {
+    if (isoTime == null) return "N/A"
+    return try {
+        // "2024-01-01T06:45" → take everything after "T" → "06:45"
+        val timePart = isoTime.substringAfter("T")          // "06:45"
+        val hour = timePart.substringBefore(":").toInt()    // 6
+        val minute = timePart.substringAfter(":").toInt()   // 45
+        val minuteStr = minute.toString().padStart(2, '0')  // "45" (always 2 digits)
+        when {
+            hour == 0  -> "12:${minuteStr} AM"
+            hour < 12  -> "${hour}:${minuteStr} AM"
+            hour == 12 -> "12:${minuteStr} PM"
+            else       -> "${hour - 12}:${minuteStr} PM"
+        }
+    } catch (e: Exception) {
+        "N/A"  // If anything goes wrong, show N/A — never crash the app
     }
 }

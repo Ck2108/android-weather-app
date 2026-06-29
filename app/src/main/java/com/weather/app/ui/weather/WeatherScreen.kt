@@ -250,7 +250,9 @@ private fun SuccessContent(state: WeatherState) {
             WeatherDetailRow(
                 windSpeed = state.windSpeed,
                 humidity = state.humidity,
-                feelsLike = state.feelsLike
+                feelsLike = state.feelsLike,
+                sunrise = state.sunrise,
+                sunset = state.sunset
             )
 
             if (state.hourlyForecast.isNotEmpty()) {

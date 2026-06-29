@@ -54,6 +54,8 @@ data class WeatherState(
     val windSpeed: String = "",             // "12 mph"
     val humidity: String = "",              // "65%"
     val feelsLike: String = "",             // "70°F"
+    val sunrise: String = "",              // "6:45 AM"
+    val sunset: String = "",               // "8:32 PM"
     val hourlyForecast: List<HourlyWeather> = emptyList(),  // List of hourly data
 
     // ---- Screen state ----

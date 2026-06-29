@@ -61,8 +61,10 @@ data class HourlyWeatherDto(
     @SerializedName("weather_code") val weatherCode: List<Int>         // [0, 1, 3, ...]
 )
 
-// Daily high and low temperatures
+// Daily high and low temperatures + sunrise/sunset times
 data class DailyWeatherDto(
     @SerializedName("temperature_2m_max") val maxTemperature: List<Double>,  // [78.0]
-    @SerializedName("temperature_2m_min") val minTemperature: List<Double>   // [65.0]
+    @SerializedName("temperature_2m_min") val minTemperature: List<Double>,  // [65.0]
+    @SerializedName("sunrise") val sunrise: List<String>,                    // ["2024-01-01T06:45"]
+    @SerializedName("sunset") val sunset: List<String>                       // ["2024-01-01T20:32"]
 )

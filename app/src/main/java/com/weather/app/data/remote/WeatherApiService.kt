@@ -65,7 +65,7 @@ interface WeatherApiService {
         // Which hourly fields we want
         @Query("hourly") hourly: String = "temperature_2m,weather_code",
         // Which daily fields we want
-        @Query("daily") daily: String = "temperature_2m_max,temperature_2m_min",
+        @Query("daily") daily: String = "temperature_2m_max,temperature_2m_min,sunrise,sunset",
         // Use Fahrenheit (not Celsius)
         @Query("temperature_unit") temperatureUnit: String = "fahrenheit",
         // Wind speed in mph (not km/h)
