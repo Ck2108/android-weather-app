@@ -163,10 +163,10 @@ fun formatSunTime(isoTime: String?): String {
 // =============================================================
 fun aqiToLabel(index: Int): String = when {
     index < 0    -> "--"          // -1 = fetch failed, graceful fallback
-    index <= 20  -> "Good"
-    index <= 40  -> "Fair"
-    index <= 60  -> "Moderate"
-    index <= 80  -> "Poor"
-    index <= 100 -> "Very Poor"
+    index <= 50  -> "Good"
+    index <= 100  -> "Moderate"
+    index <= 150  -> "Unhealthy for Sensitive Groups"
+    index <= 200  -> "Unhealthy"
+    index <= 500 -> "Very Unhealthy"
     else         -> "Hazardous"
 }

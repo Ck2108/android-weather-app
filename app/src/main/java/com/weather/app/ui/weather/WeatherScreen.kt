@@ -255,19 +255,19 @@ private fun SuccessContent(state: WeatherState) {
                 feelsLike = state.feelsLike,
             )
 
-            if (state.hourlyForecast.isNotEmpty()) {
-                HourlyForecast(hourlyData = state.hourlyForecast)
-            }
+            SunriseSunsetRow(
+                sunrise = state.sunrise,
+                sunset = state.sunset
+            )
 
             AirQualityCard(
                 aqiIndex = state.aqiIndex,
                 aqiLabel = state.aqiLabel
             )
 
-            SunriseSunsetRow(
-                sunrise = state.sunrise,
-                sunset = state.sunset
-            )
+            if (state.hourlyForecast.isNotEmpty()) {
+                HourlyForecast(hourlyData = state.hourlyForecast)
+            }
         }
     }
 }
