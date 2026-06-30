@@ -104,7 +104,7 @@ interface AirQualityApiService {
     suspend fun getAirQuality(
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
-        // Request current european_aqi — the standard EU air quality index
-        @Query("current") current: String = "european_aqi"
+        // Request current us_aqi — matches Apple Weather's US EPA standard (0-500)
+        @Query("current") current: String = "us_aqi"
     ): com.weather.app.data.remote.dto.AirQualityResponseDto
 }

@@ -31,5 +31,5 @@ data class AirQualityResponseDto(
 )
 
 data class CurrentAirQualityDto(
-    @SerializedName("european_aqi") val europeanAqi: Int   // 42
+    @SerializedName("us_aqi") val usAqi: Int   // 85 (US EPA scale 0-500)
 )
