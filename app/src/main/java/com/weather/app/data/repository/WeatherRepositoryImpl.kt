@@ -70,7 +70,7 @@ class WeatherRepositoryImpl(
                 airQualityApi.getAirQuality(
                     latitude = location.latitude,
                     longitude = location.longitude
-                ).current.europeanAqi
+                ).current.usAqi
             }.getOrElse { error ->
                 WeatherLogger.e("Repository: AQI fetch failed (graceful fallback)", error)
                 -1  // -1 = unavailable → mapper will show "--"
