@@ -29,14 +29,15 @@ import com.weather.app.ui.theme.TextOnSkyMuted
 // =============================================================
 
 // AQI color: changes from green → yellow → orange → red → purple → maroon
+// Updated for US EPA AQI thresholds
 private fun aqiColor(index: Int): Color = when {
     index < 0    -> Color(0x80FFFFFF)   // Muted white for "--"
-    index <= 20  -> Color(0xFF4CAF50)   // Green — Good
-    index <= 40  -> Color(0xFF8BC34A)   // Light green — Fair
-    index <= 60  -> Color(0xFFFFC107)   // Amber — Moderate
-    index <= 80  -> Color(0xFFFF9800)   // Orange — Poor
-    index <= 100 -> Color(0xFFF44336)   // Red — Very Poor
-    else         -> Color(0xFF9C27B0)   // Purple — Hazardous
+    index <= 50  -> Color(0xFF4CAF50)   // Green — Good
+    index <= 100 -> Color(0xFFFFC107)   // Yellow/Amber — Moderate
+    index <= 150 -> Color(0xFFFF9800)   // Orange — Unhealthy for Sensitive Groups
+    index <= 200 -> Color(0xFFF44336)   // Red — Unhealthy
+    index <= 300 -> Color(0xFF9C27B0)   // Purple — Very Unhealthy
+    else         -> Color(0xFF4A148C)   // Maroon — Hazardous
 }
 
 @Composable
@@ -49,18 +50,27 @@ fun AirQualityCard(
     val indexInt = aqiIndex.toIntOrNull() ?: -1
     val accentColor = aqiColor(indexInt)
 
-    // Bar progress: map AQI 0–150 to 0.0–1.0 (cap at 150 for visual clarity)
-    val barProgress = if (indexInt >= 0) (indexInt.coerceIn(0, 150) / 150f) else 0f
+    // Bar progress: map AQI to 6 visually equal segments to keep the gradient balanced
+    val barProgress = if (indexInt < 0) 0f else {
+        val segment = 1f / 6f
+        when {
+            indexInt <= 50  -> (indexInt / 50f) * segment
+            indexInt <= 100 -> segment + ((indexInt - 50) / 50f) * segment
+            indexInt <= 150 -> 2 * segment + ((indexInt - 100) / 50f) * segment
+            indexInt <= 200 -> 3 * segment + ((indexInt - 150) / 50f) * segment
+            indexInt <= 300 -> 4 * segment + ((indexInt - 200) / 100f) * segment
+            else            -> 5 * segment + ((indexInt.coerceAtMost(500) - 300) / 200f) * segment
+        }
+    }
 
-    // The gradient colors of the AQI scale bar (green → yellow → orange → red → purple → maroon)
+    // The gradient colors of the AQI scale bar (evenly spaced for visual balance)
     val gradientColors = listOf(
         Color(0xFF4CAF50),  // Green
-        Color(0xFF8BC34A),  // Light green
-        Color(0xFFFFC107),  // Amber
+        Color(0xFFFFC107),  // Yellow
         Color(0xFFFF9800),  // Orange
         Color(0xFFF44336),  // Red
         Color(0xFF9C27B0),  // Purple
-        Color(0xFF4A148C)   // Dark maroon
+        Color(0xFF4A148C)   // Maroon
     )
 
     Surface(
@@ -105,7 +115,7 @@ fun AirQualityCard(
                     )
                     // Sub-label
                     Text(
-                        text = "European AQI",
+                        text = "US EPA AQI",
                         style = MaterialTheme.typography.labelSmall,
                         color = TextOnSkyMuted
                     )
